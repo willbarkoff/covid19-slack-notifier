@@ -20,25 +20,27 @@ const app = new App({
 (async () => {
 	await app.start(process.env.PORT || 3000);
 
+	let lastAvailableLocationIds = [];
+
 	setInterval(async () => {
 		let fetchresp = await fetch("https://nycvaccinelist.com/api/locations");
 		let resp = await fetchresp.json()
 
 		let availableLocations = resp.locations.filter(location => location.total_available > 0);
+		let availableLocationIds = availableLocations.map(loc => loc.id);
 
-		if (availableLocations.length < 1) {
+		if (availableLocations.length < 1 || lastAvailableLocationIds == availableLocationIds) {
 			return;
 		}
 
 		try {
-			const result = await app.client.chat.postMessage({
+			await app.client.chat.postMessage({
 				channel: channelID,
 				text: `There are vaccines available at ${availableLocations.map(loc => loc.name).join()}. Check nycvaccinelist.com for more information.`,
 				token: process.env.SLACK_BOT_TOKEN,
 			})
-			console.log(result)
+			lastAvailableLocationIds = availableLocationIds;
 		} catch (e) {
-			console.error(e)
 		}
 
 	}, interval);
