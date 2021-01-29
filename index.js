@@ -28,18 +28,27 @@ const app = new App({
 		let availableLocations = resp.locations.filter(location => location.total_available > 0);
 		let availableLocationIds = availableLocations.map(loc => loc.id);
 
-		if (availableLocations.length < 1 || lastAvailableLocationIds == availableLocationIds) {
+		if (JSON.stringify(lastAvailableLocationIds) == JSON.stringify(availableLocationIds)) {
 			return;
 		}
-
 		try {
-			await app.client.chat.postMessage({
-				channel: channelID,
-				text: `There are vaccines available at ${availableLocations.map(loc => loc.name).join()}. Check nycvaccinelist.com for more information.`,
-				token: process.env.SLACK_BOT_TOKEN,
-			})
-			lastAvailableLocationIds = availableLocationIds;
+			if (availableLocations.length < 1 && lastAvailableLocationIds.length >= 1) {
+				await app.client.chat.postMessage({
+					channel: channelID,
+					text: `These vaccines are no longer available. Check nycvaccinelist.com for more information.`,
+					token: process.env.SLACK_BOT_TOKEN,
+				})
+			} else if (availableLocations.length > 1) {
+				await app.client.chat.postMessage({
+					channel: channelID,
+					text: `There are vaccines available at ${availableLocations.map(loc => loc.name).join()}. Check nycvaccinelist.com for more information.`,
+					token: process.env.SLACK_BOT_TOKEN,
+				})
+			}
 		} catch (e) {
+			console.error(e)
+		} finally {
+			lastAvailableLocationIds = availableLocationIds;
 		}
 
 	}, interval);
