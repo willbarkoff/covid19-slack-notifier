@@ -1,6 +1,6 @@
-import DotEnv from 'dotenv';
-import { App } from '@slack/bolt';
-import fetch from 'node-fetch';
+const DotEnv = require('dotenv');
+const { App } = require('@slack/bolt');
+const fetch = require('node-fetch');
 
 DotEnv.config();
 
@@ -13,7 +13,7 @@ const interval = 30 * 1000
 // Initializes your app with your bot token and signing secret
 const app = new App({
 	token: process.env.SLACK_BOT_TOKEN,
-	signingSecret: process.env.SLACK_SIGNING_SECRET
+	signingSecret: process.env.SLACK_SIGNING_SECRET,
 });
 
 (async () => {
