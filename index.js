@@ -1,5 +1,5 @@
 import DotEnv from 'dotenv';
-import { App, LogLevel } from '@slack/bolt';
+import { App } from '@slack/bolt';
 import fetch from 'node-fetch';
 
 DotEnv.config();
