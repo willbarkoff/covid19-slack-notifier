@@ -17,8 +17,6 @@ const generateBlocks = (locations) => {
 		}
 	}))
 
-	console.log(locBlocks)
-
 	let blocks = [
 		{
 			"type": "section",
