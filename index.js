@@ -6,10 +6,10 @@ const { generateBlocks } = require("./payload")
 
 DotEnv.config();
 
-const channelID = "C01LEHD7ZT5"
+const channelID = "C01L9DB4JKD"
 
 // 30 second interval
-const interval = 10 * 1000
+const interval = 30 * 1000
 
 
 // Initializes your app with your bot token and signing secret
