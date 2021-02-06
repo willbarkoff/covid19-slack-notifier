@@ -35,7 +35,25 @@ const arrayEquals = (arr1, arr2) => {
 		let fetchresp = await fetch("https://nycvaccinelist.com/api/locations");
 		let resp = await fetchresp.json()
 
-		let availableLocations = resp.locations.filter(location => location.total_available > 3);
+		let availableLocations = resp.locations.filter(location => {
+			if (location.total_available < 9) {
+				return false
+			}
+
+			if (location.name.indexOf("NYCHA") > -1) {
+				return false
+			}
+
+			if (location.name.indexOf("Zip Code") > -1) {
+				return false
+			}
+
+			if (location.name.indexOf("City Employees Only") > -1) {
+				return false
+			}
+
+			return true
+		});
 		let availableLocationIds = availableLocations.map(loc => loc.id);
 
 		if (arrayEquals(lastAvailableLocationIds, availableLocationIds) || availableLocationIds.length < 1) {

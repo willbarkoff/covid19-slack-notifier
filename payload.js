@@ -12,7 +12,6 @@ const generateBlocks = (locations) => {
 				"emoji": true,
 				"text": "Reserve"
 			},
-			"value": "reserve",
 			"url": loc.url
 		}
 	}))
@@ -44,6 +43,15 @@ const generateBlocks = (locations) => {
 		},
 		{
 			"type": "divider"
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": "If this bot has helped you, or you have feedback, please consider filling out <https://g.willbarkoff.dev/vaccinefeedback|this> quick, 45 second feedback survey."
+				}
+			]
 		}
 	]
 
